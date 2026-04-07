@@ -1,75 +1,79 @@
 # Actualizer.ai
 
-A planning vessel that works backward from future states to present actions, built for the Cocapn Fleet.
+You already know what you want the future to look like. What you don't know is what to do today.
 
-**Live URL:** https://actualizer-ai.casey-digennaro.workers.dev
+A reverse-actualization engine that thinks backward from 1-year to 100-year futures to identify present actions. Built for the Cocapn Fleet.
+
+**Live instance:** https://actualizer-ai.casey-digennaro.workers.dev
 
 ---
 
-### Overview
-Most planning tools sequence tasks forward from the present. This one starts by defining a desired future outcome, then reasons backward through causal steps to identify present actions.
+## Why this exists
+Most planning tools run forward. They take your current position and extrapolate incremental next steps.
 
-It implements a reverse-actualization protocol, analyzing multiple time horizons independently to surface assumptions and tradeoffs.
+This agent works the other way. You define an end state. It then walks backwards through causal dependencies to identify actions you could take this week. It's a structured thought experiment, not a crystal ball.
 
-### How it Works
-You provide a goal or endpoint. The vessel reasons backward from that future state through successive causal dependencies until it reaches actionable steps for today. It runs this analysis across six time horizons (1, 5, 10, 25, 50, and 100 years) in parallel.
+---
 
-### What to Expect
-- A backward causal chain from your defined endpoint to present actions
-- Independent analysis across multiple time horizons
-- Output formatted as compass bearings (directional guidance) rather than prescriptive tasks
-- Model call metrics (quality, cost, latency) for transparency
-- Native compatibility with the Cocapn Fleet protocol
+## What this does
+A minimal agent running on Cloudflare Workers. It performs reverse-actualization by running parallel analysis across six time horizons (1, 5, 10, 25, 50, 100 years).
 
-### Limitations
-Reverse-actualization relies on model reasoning to infer causal steps. For highly novel or long-term futures, these inferred steps may contain gaps or speculative leaps.
+For a given future outcome, it:
+1.  Runs isolated analysis for each horizon
+2.  Attempts to resolve causal chains between them
+3.  Outputs directional guidance (not prescriptive tasks)
+4.  Logs every reasoning step and model call
+
+**Limitation:** The output is suggestive, not predictive. It simulates a reasoning process and may miss critical real-world constraints.
+
+---
+
+## What makes this different
+*   **No forecasting:** It maps what must be true for a target future to exist, without probability scores.
+*   **Self-contained:** You deploy your own copy. Your data and API keys stay in your instance.
+*   **Fork-first:** This is a base to modify, extend, and own. There is no single correct version.
+*   **Fleet-native:** Authenticates and interoperates with other agents on the Cocapn Fleet.
+
+---
+
+## Try it
+Use the public instance with no signup:  
+https://actualizer-ai.casey-digennaro.workers.dev
 
 ---
 
 ## Quick Start
-
 1.  Fork this repository.
-2.  Clone your fork locally.
-3.  Deploy to Cloudflare Workers:
-    ```bash
-    npx wrangler deploy
-    ```
-4.  Configure API keys as Worker secrets (see below).
-
-## Configuration
-
-Add API keys as environment secrets via `wrangler secret put`. Keys are never transmitted outside your instance.
-
-| Secret | Purpose |
-|---|---|
-| `DEEPSEEK_API_KEY` | For DeepSeek models |
-| `DEEPINFRA_API_KEY` | For DeepInfra endpoints |
-| `SILICONFLOW_API_KEY` | For SiliconFlow inference |
-
-You can configure any OpenAI-compatible provider at runtime.
+2.  Deploy to Cloudflare Workers: `npx wrangler deploy`
+3.  Configure your model API keys as secrets.
 
 ---
 
-## Technical Details
+## Bring Your Own Key
+Configure model keys as worker secrets via `wrangler secret put`:
 
-- **Runtime:** Cloudflare Workers
-- **Dependencies:** Zero production dependencies
-- **License:** MIT
-- **Protocol:** Native Cocapn Fleet vessel
+| Secret | Purpose |
+| :--- | :--- |
+| `DEEPSEEK_API_KEY` | DeepSeek models |
+| `DEEPINFRA_API_KEY` | DeepInfra endpoints |
+| `SILICONFLOW_API_KEY` | SiliconFlow inference |
 
-The code is structured for modification. Change the actualization logic, model routing, or output formatting in a single file and redeploy.
+You can add any OpenAI-compatible endpoint.
 
 ---
 
 ## Contributing
+This project follows a fork-first philosophy. You are expected to fork it, break it, and run your own version. Pull requests for fixes and documentation are welcome.
 
-This project follows a fork-first philosophy. You are encouraged to fork the repository, modify it for your needs, and deploy your own instance. Pull requests for bug fixes or core protocol improvements are welcome.
+---
 
-**License:** MIT License · Superinstance & Lucineer (DiGennaro et al.)
+## License
+MIT License.
+
+Superinstance & Lucineer (DiGennaro et al.).
 
 ---
 
 <div align="center">
-  <a href="https://the-fleet.casey-digennaro.workers.dev">The Fleet</a> · 
-  <a href="https://cocapn.ai">Cocapn</a>
+  <a href="https://the-fleet.casey-digennaro.workers.dev">The Fleet</a> • <a href="https://cocapn.ai">Cocapn</a>
 </div>
